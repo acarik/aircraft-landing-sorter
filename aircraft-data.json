@@ -1,0 +1,112 @@
+[
+  {
+	  "Entry point": "E1",
+    "Aircraft name": "AC3",
+    "Type": "Light",
+    "Appearance time": 14,
+    "Earliest time": 89,
+    "Target time": 98,
+    "Latest time": 510,
+    "Penalty cost per early landing": 30,
+    "Penalty cost per late landing": 30
+  },
+  {
+	  "Entry point": "E1",
+    "Aircraft name": "AC4",
+    "Type": "Light",
+    "Appearance time": 21,
+    "Earliest time": 96,
+    "Target time": 106,
+    "Latest time": 521,
+    "Penalty cost per early landing": 30,
+    "Penalty cost per late landing": 30
+  },
+  {
+	  "Entry point": "E1",
+    "Aircraft name": "AC5",
+    "Type": "Light",
+    "Appearance time": 35,
+    "Earliest time": 110,
+    "Target time": 123,
+    "Latest time": 555,
+    "Penalty cost per early landing": 30,
+    "Penalty cost per late landing": 30
+  },
+  {
+	  "Entry point": "E1",
+    "Aircraft name": "AC6",
+    "Type": "Light",
+    "Appearance time": 45,
+    "Earliest time": 120,
+    "Target time": 135,
+    "Latest time": 576,
+    "Penalty cost per early landing": 30,
+    "Penalty cost per late landing": 30
+  },
+  {
+	  "Entry point": "E1",
+    "Aircraft name": "AC7",
+    "Type": "Light",
+    "Appearance time": 49,
+    "Earliest time": 124,
+    "Target time": 138,
+    "Latest time": 577,
+    "Penalty cost per early landing": 30,
+    "Penalty cost per late landing": 30
+  },
+  {
+	  "Entry point": "E1",
+    "Aircraft name": "AC8",
+    "Type": "Light",
+    "Appearance time": 51,
+    "Earliest time": 126,
+    "Target time": 140,
+    "Latest time": 573,
+    "Penalty cost per early landing": 30,
+    "Penalty cost per late landing": 30
+  },
+  {
+	  "Entry point": "E1",
+    "Aircraft name": "AC9",
+    "Type": "Light",
+    "Appearance time": 60,
+    "Earliest time": 135,
+    "Target time": 150,
+    "Latest time": 531,
+    "Penalty cost per early landing": 30,
+    "Penalty cost per late landing": 30
+  },
+  {
+	  "Entry point": "E1",
+    "Aircraft name": "AC1",
+    "Type": "Medium",
+    "Appearance time": 54,
+    "Earliest time": 129,
+    "Target time": 155,
+    "Latest time": 559,
+    "Penalty cost per early landing": 10,
+    "Penalty cost per late landing": 10
+  },
+  {
+	  "Entry point": "E1",
+    "Aircraft name": "AC10",
+    "Type": "Medium",
+    "Appearance time": 85,
+    "Earliest time": 160,
+    "Target time": 180,
+    "Latest time": 657,
+    "Penalty cost per early landing": 30,
+    "Penalty cost per late landing": 30
+  },
+  {
+	  "Entry point": "E1",
+    "Aircraft name": "AC2",
+    "Type": "Medium",
+    "Appearance time": 120,
+    "Earliest time": 195,
+    "Target time": 258,
+    "Latest time": 744,
+    "Penalty cost per early landing": 10,
+    "Penalty cost per late landing": 10
+  }
+]

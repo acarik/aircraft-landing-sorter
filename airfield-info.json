@@ -1,0 +1,14 @@
+[
+    {
+        "Entry point" : "E1",
+        "Route" : {
+            "Number of TPs" : 2,
+            "Number of WPs" : 6,
+            "Entry to WP1 times" : [506, 590],
+            "WP leg time" : 60,
+            "WP to FAF time" : 220,
+            "TP names" : ["TP1", "TP2"],
+            "WP names" : ["WP1", "WP2", "WP3", "WP4", "WP5", "WP6"]
+        }
+    }
+]
