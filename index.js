@@ -1,7 +1,14 @@
 const aircraftData = require('./aircraft-data.json');
 const utils = require('./utils.js');
 
+const XLSX = require('xlsx');
+const workbook = XLSX.readFile('Senaryo 1.xlsx');
+const sheetNameList = workbook.SheetNames;
+console.log(XLSX.utils.sheet_to_json(workbook.Sheets[sheetNameList[0]]))
+
+
 const routes = [];
+
 // push each aircraft into the array
 aircraftData.forEach(element => {
     routes.push(new utils.route(element));

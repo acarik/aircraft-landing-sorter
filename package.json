@@ -9,6 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "read-excel-file": "^2.0.6"
+    "xlsx": "^0.14.1"
   }
 }
