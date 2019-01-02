@@ -27,32 +27,11 @@ function loadScenario(){
 
 function parseTimeStr(str){
     var fields = str.split(':');
-    var time = moment({ hour:fields[0], minute:fields[1], second:fields[2]});;
+    var time = moment({ hour:fields[0], minute:fields[1], second:fields[2]});
     return time;
 }
 
+
+
 exports.loadScenario = loadScenario;
 exports.parseTimeStr = parseTimeStr;
-
-/*
-scenarioData[i].acNumber 
-= scenarioDataRaw[i][0];
-scenarioData[i].entry 
-= scenarioDataRaw[i][1];
-scenarioData[i].entryP
-= scenarioDataRaw[i][2];
-scenarioData[i].acType
-= scenarioDataRaw[i][3];
-scenarioData[i].appearanceTime
-= scenarioDataRaw[i][4];
-scenarioData[i].earliestTime
-= scenarioDataRaw[i][5];
-scenarioData[i].targetTime
-= scenarioDataRaw[i][6];
-scenarioData[i].latestTime
-= scenarioDataRaw[i][7];
-scenarioData[i].latePenalty
-= scenarioDataRaw[i][9];
-scenarioData[i].earlyPenalty
-= scenarioDataRaw[i][10];
-*/

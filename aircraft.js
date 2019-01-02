@@ -18,6 +18,27 @@ class Aircraft{
         this.possibleLandingTimes 
             = getPossibleLandingTimes(this.apperanceTime);
         this.assignedRoute    = -1;
+
+        // calculate deltaTimes and costs for each possible landing time
+        this.deltaTimes       = [];
+        this.possibleLandingTimeCosts = [];
+        var currDeltaTime;
+        var currCost;
+        this.possibleLandingTimes.forEach(element => {
+            currDeltaTime = this.targetTime.diff(element.time,'seconds');
+            this.deltaTimes.push(currDeltaTime);
+            currCost = ((currDeltaTime < 0) ? this.earlyPenalty : this.latePenalty);
+            currCost *= currDeltaTime;
+        });
+
+        // sort possible landings with respect to the landing costs
+        this.sortedLandingTimeIndx = [];
+        this.sort();
+    }
+
+    sort(){
+        let a = 1;
+
     }
 }
 function getPossibleLandingTimes(apperanceTime){
@@ -75,7 +96,7 @@ function getPossibleLandingTimes(apperanceTime){
 
     for(let i = 0; i<landingTimes.length; i++)
     {
-        landingTimes[i].time += apperanceTime;
+        landingTimes[i].time = landingTimes[i].time.add(apperanceTime);
     }
     return landingTimes;
 }
