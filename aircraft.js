@@ -1,7 +1,16 @@
 utils = require('./utils.js')
 var moment = require('moment');
 
+var fieldsToDisplay = [
+    "number",
+    "entry",
+    "apperanceTime",
+    "type",
+    "assignedRoute"
+];
+
 class Aircraft{
+    
     constructor(scenarioDataLine){
         var fields = scenarioDataLine.split(';');
         
@@ -17,6 +26,7 @@ class Aircraft{
         this.latePenalty      = parseInt(fields[9]);
         this.possibleLandingTimes 
             = getPossibleLandingTimes(this.apperanceTime);
+        // this indicates the ind in the array sortedPossibleLandingTimeIndx
         this.assignedRoute    = -1;
 
         // calculate deltaTimes and costs for each possible landing time
@@ -35,13 +45,11 @@ class Aircraft{
         // sort possible landings with respect to the landing costs
         this.sortedPossibleLandingTimeIndx = [];
         this.sort();
-
-        let a = 1;
     }
 
     sort(){
         this.sortedPossibleLandingTimeIndx = 
-            sortWithIndeces(this.possibleLandingTimes);
+            sortWithIndeces(this.possibleLandingTimeCosts);
 
             function sortWithIndeces(toSort){
                 for (let i = 0; i < toSort.length; i++) {
@@ -50,7 +58,7 @@ class Aircraft{
                 toSort.sort(function(left, right) {
                     if (left[0] == right[0])
                         return 0;
-                    return left[0] < right[0] ? -1 : 1;
+                    return left[0] < right[0] ? 1 : -1;
                 });
                 toSort.sortIndices = [];
                 for (var j = 0; j < toSort.length; j++) {
@@ -59,6 +67,41 @@ class Aircraft{
                 }
                 return toSort.sortIndices;
             }
+    }
+
+    disp(){
+        let str = [];
+        fieldsToDisplay.forEach(element => {
+            str += this[element].toString() + " / "
+        });
+
+        console.log(str);
+
+        // now possible landing times, sorted
+        this.sortedPossibleLandingTimeIndx.forEach(ind => {
+            str = [];
+            if (this.assignedRoute == ind){
+                str += "->";
+            }else{
+                str += "  ";
+            }
+            str += 
+                "Route#" + ind.toString() + " | " + 
+                this.possibleLandingTimes[ind].route.toString() + " | " +
+                this.possibleLandingTimes[ind].time.toString() + " | " +
+                this.possibleLandingTimeCosts[ind].toString() + " | ";
+            console.log(str);
+        })
+        console.log(" ");
+        
+    }
+    dispFields(){
+        var str = [];
+        fieldsToDisplay.forEach(element => {
+            str += element + " / ";
+        });
+
+        console.log(str);
     }
 }
 function getPossibleLandingTimes(apperanceTime){

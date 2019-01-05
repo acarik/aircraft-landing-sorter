@@ -1,6 +1,6 @@
 utils = require('./utils');
 scenario = utils.loadScenario();
 
-console.log('Scenario loaded.');
+scenario.disp();
 
 let a = 1;

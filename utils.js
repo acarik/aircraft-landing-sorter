@@ -1,4 +1,5 @@
 const Aircraft = require('./aircraft.js')
+const Scenario = require('./scenario.js')
 var moment = require('moment');
 
 function loadScenario(){
@@ -15,9 +16,9 @@ function loadScenario(){
         "10;NORTH;HEAVY;00:10:15;00:10:51;00:21:24;00:26:24;00:26:24;3000;3000"
     ];
     
-    var scenario = [];
+    var scenario = new Scenario();
     scenarioRaw.forEach(scenarioLineRaw => {
-        scenario.push(new Aircraft(scenarioLineRaw))
+        scenario.addAircraft(new Aircraft(scenarioLineRaw))
     });
     
     return scenario;
@@ -29,7 +30,19 @@ function parseTimeStr(str){
     return time;
 }
 
+// file logger
+var fs = require('fs');
+var util = require('util');
+var logFile = fs.createWriteStream('log.txt', { flags: 'w' });
+  // Or 'w' to truncate the file every time the process starts.
+var logStdout = process.stdout;
 
+console.log = function () {
+  logFile.write(util.format.apply(null, arguments) + '\n');
+  logStdout.write(util.format.apply(null, arguments) + '\n');
+}
+console.error = console.log;
 
 exports.loadScenario = loadScenario;
 exports.parseTimeStr = parseTimeStr;
+exports.console = console;
