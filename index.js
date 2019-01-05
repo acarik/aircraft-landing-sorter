@@ -3,4 +3,9 @@ scenario = utils.loadScenario();
 
 scenario.disp();
 
-let a = 1;
+if(scenario.find(0)){
+    console.log('Solution found.');
+}
+else{
+    console.log('Solution NOT found.');
+}

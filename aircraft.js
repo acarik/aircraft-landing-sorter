@@ -103,6 +103,16 @@ class Aircraft{
 
         console.log(str);
     }
+
+    assignNext(){
+        this.assignedRoute++;
+        if (this.assignedRoute >= this.possibleLandingTimes.length)
+            error("Cannot assign.");
+    }
+    
+    isLastRouteAssigned(){
+        return (this.assignedRoute == this.possibleLandingTimes.length-1);
+    }
 }
 function getPossibleLandingTimes(apperanceTime){
     // TODO: aslinda appearanceTime ile ilkleyip sureleri bunun uzerine eklemeli
