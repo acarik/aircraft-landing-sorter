@@ -1,9 +1,6 @@
 utils = require('./utils');
 scenario = utils.loadScenario();
 
-var currLine;
+console.log('Scenario loaded.');
 
-// sort aircraft possible landing times
-scenario.forEach(element => {
-    element.sort();
-});
+let a = 1;

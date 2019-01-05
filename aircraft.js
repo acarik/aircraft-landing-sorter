@@ -27,21 +27,43 @@ class Aircraft{
         this.possibleLandingTimes.forEach(element => {
             currDeltaTime = this.targetTime.diff(element.time,'seconds');
             this.deltaTimes.push(currDeltaTime);
-            currCost = ((currDeltaTime < 0) ? this.earlyPenalty : this.latePenalty);
+            currCost = ((currDeltaTime < 0) ? -this.earlyPenalty : this.latePenalty);
             currCost *= currDeltaTime;
+            this.possibleLandingTimeCosts.push(currCost);
         });
 
         // sort possible landings with respect to the landing costs
-        this.sortedLandingTimeIndx = [];
+        this.sortedPossibleLandingTimeIndx = [];
         this.sort();
+
+        let a = 1;
     }
 
     sort(){
-        let a = 1;
+        this.sortedPossibleLandingTimeIndx = 
+            sortWithIndeces(this.possibleLandingTimes);
 
+            function sortWithIndeces(toSort){
+                for (let i = 0; i < toSort.length; i++) {
+                    toSort[i] = [toSort[i], i];
+                }
+                toSort.sort(function(left, right) {
+                    if (left[0] == right[0])
+                        return 0;
+                    return left[0] < right[0] ? -1 : 1;
+                });
+                toSort.sortIndices = [];
+                for (var j = 0; j < toSort.length; j++) {
+                    toSort.sortIndices.push(toSort[j][1]);
+                    toSort[j] = toSort[j][0];
+                }
+                return toSort.sortIndices;
+            }
     }
 }
 function getPossibleLandingTimes(apperanceTime){
+    // TODO: aslinda appearanceTime ile ilkleyip sureleri bunun uzerine eklemeli
+    // boyle de yazabiliriz var person = {firstName:"John", lastName:"Doe", age:46}; 
     var landingTimes =  [
         {
             time:new moment({minute:6, second:5}),

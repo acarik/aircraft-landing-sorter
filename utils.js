@@ -19,8 +19,6 @@ function loadScenario(){
     scenarioRaw.forEach(scenarioLineRaw => {
         scenario.push(new Aircraft(scenarioLineRaw))
     });
-
-    console.log(scenario);
     
     return scenario;
 }
