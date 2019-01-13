@@ -30,25 +30,7 @@ class Scenario{
         }
         if (startInd < 0 || startInd > this.length())
             console.error("Invalid start index.");
-        /*
-        let i = startInd;
-        while (true){
-            if (this.aircrafts[i].isLastRouteAssigned()){
-                // then assignment is not possible
-                // decrease startInd and try next one
-                return(this.find(startInd-1));
-            }
-            else{
-                this.aircrafts[i].assignNext();
-                this.disp();
-            }
-            
-            if (this.check()) // check for the constraints
-                return(this.find(startInd+1));
-        });
-        }
-        */
-       for (let i = startInd; i<this.length(); i++){
+        for (let i = startInd; i<this.length(); i++){
             if (this.aircrafts[i].isLastRouteAssigned()){
                 // then assignment is not possible
                 // decrease startInd and try next one
@@ -62,6 +44,7 @@ class Scenario{
             // check for the constraints
             if (this.check()){
                 if (i == this.length()-1){
+                    // if the last one
                     return(true);
                 }else{
                     return(this.find(startInd+1));
@@ -75,21 +58,24 @@ class Scenario{
     }
     check(){
         // true if scenario does not violate constraints
+        // 1. all aircrafts that are assigned a route must 
+        // land in [earliest time, latest time]
+        let currLanding;
+        let currLandingTime;
+        for(let i = 0; i<this.length(); i++){
+            if(this.aircrafts[i].isAssigned()){
+                currLanding = this.aircrafts[i].getAssignedLandingTime();
+                currLandingTime = currLanding.time;
+                if ((currLandingTime.isBefore(this.aircrafts[i].latestTime)) && (currLandingTime.isAfter(this.aircrafts[i].earliestTime))){
+                    // ok. no problem.
+                }else{
+                    return false;
+                }
 
-        // dummy
-        // false if all zero
-        var ret = false;
-        var sum = 0;
-        this.aircrafts.forEach(element => {
-            sum += element.assignedRoute;
-        });
-        sum -= this.aircrafts[this.aircrafts.length-1].assignedRoute;
-        console.log(sum);
+            }
+        }
         
-        if (sum == 0)
-            return false;
-        else
-            return true;
+        return true;
     }
 }
 

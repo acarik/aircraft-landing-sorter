@@ -6,7 +6,10 @@ var fieldsToDisplay = [
     "entry",
     "apperanceTime",
     "type",
-    "assignedRoute"
+    "assignedRoute",
+    "earliestTime",
+    "latestTime",
+    "actualTime"
 ];
 
 class Aircraft{
@@ -43,25 +46,40 @@ class Aircraft{
         });
 
         // sort possible landings with respect to the landing costs
-        this.sortedPossibleLandingTimeIndx = [];
         this.sort();
     }
 
-    sort(){
-        this.sortedPossibleLandingTimeIndx = 
-            sortWithIndeces(this.possibleLandingTimeCosts);
+    length(){
+        return this.possibleLandingTimes.length;
+    }
 
-            function sortWithIndeces(toSort){
+    sort(){
+        let sortedPossibleLandingTimeIndx = 
+            sortWithIndeces(this.possibleLandingTimeCosts);
+        // reindex landing times
+        let possibleLandingTimeCosts = [];
+        let possibleLandingTimes = [];
+        sortedPossibleLandingTimeIndx.forEach(ind => {
+            possibleLandingTimeCosts.push(this.possibleLandingTimeCosts[ind]);
+            possibleLandingTimes.push(this.possibleLandingTimes[ind]);
+        });
+        this.possibleLandingTimeCosts = possibleLandingTimeCosts;
+        this.possibleLandingTimes     = possibleLandingTimes;
+
+            function sortWithIndeces(possibleLandingTimeCosts){
+                var toSort = possibleLandingTimeCosts.slice();
+                let check = [];
                 for (let i = 0; i < toSort.length; i++) {
                     toSort[i] = [toSort[i], i];
                 }
                 toSort.sort(function(left, right) {
                     if (left[0] == right[0])
                         return 0;
-                    return left[0] < right[0] ? 1 : -1;
+                    return left[0] > right[0] ? 1 : -1;
                 });
                 toSort.sortIndices = [];
                 for (var j = 0; j < toSort.length; j++) {
+                    check.push(toSort[j][0])
                     toSort.sortIndices.push(toSort[j][1]);
                     toSort[j] = toSort[j][0];
                 }
@@ -78,20 +96,20 @@ class Aircraft{
         console.log(str);
 
         // now possible landing times, sorted
-        this.sortedPossibleLandingTimeIndx.forEach(ind => {
+        for(let i = 0; i<this.length(); i++){
             str = [];
-            if (this.assignedRoute == ind){
+            if (this.getAssignedRoute() == i){
                 str += "->";
             }else{
                 str += "  ";
             }
             str += 
-                "Route#" + ind.toString() + " | " + 
-                this.possibleLandingTimes[ind].route.toString() + " | " +
-                this.possibleLandingTimes[ind].time.toString() + " | " +
-                this.possibleLandingTimeCosts[ind].toString() + " | ";
+                "Route#" + i.toString() + " | " + 
+                this.possibleLandingTimes[i].route.toString() + " | " +
+                this.possibleLandingTimes[i].time.toString() + " | " +
+                this.possibleLandingTimeCosts[i].toString() + " | ";
             console.log(str);
-        })
+        }
         console.log(" ");
         
     }
@@ -106,12 +124,29 @@ class Aircraft{
 
     assignNext(){
         this.assignedRoute++;
-        if (this.assignedRoute >= this.possibleLandingTimes.length)
+        if (this.assignedRoute >= this.length())
             error("Cannot assign.");
+    }
+
+    getAssignedRoute(){
+        return this.assignedRoute;
     }
     
     isLastRouteAssigned(){
-        return (this.assignedRoute == this.possibleLandingTimes.length-1);
+        return (this.assignedRouteInd == this.length()-1);
+    }
+
+    isAssigned(){
+        return (this.assignedRoute != -1);
+    }
+
+    getAssignedLandingTime(){
+        if (this.isAssigned()){
+            return this.possibleLandingTimes[this.assignedRoute];
+        }
+        else{
+            return -1;
+        }
     }
 }
 function getPossibleLandingTimes(apperanceTime){
