@@ -60,13 +60,33 @@ class Scenario{
         // true if scenario does not violate constraints
         // 1. all aircrafts that are assigned a route must 
         // land in [earliest time, latest time]
-        let currLanding;
         let currLandingTime;
         for(let i = 0; i<this.length(); i++){
             if(this.aircrafts[i].isAssigned()){
-                currLanding = this.aircrafts[i].getAssignedLandingTime();
-                currLandingTime = currLanding.time;
+                currLandingTime = this.aircrafts[i].getAssignedLandingTime();
                 if ((currLandingTime.isBefore(this.aircrafts[i].latestTime)) && (currLandingTime.isAfter(this.aircrafts[i].earliestTime))){
+                    // ok. no problem.
+                }else{
+                    return false;
+                }
+
+            }
+        }
+
+        // 2. consecutive aircraft separation
+        //let currLandingTime;
+        let nextLandingTime;
+        let currType;
+        let nextType;
+        let delta;
+        for(let i = 0; i<this.length()-1; i++){
+            if(this.aircrafts[i].isAssigned() && this.aircrafts[i+1].isAssigned()){
+                currLandingTime = this.aircrafts[i].getAssignedLandingTime();
+                nextLandingTime = this.aircrafts[i+1].getAssignedLandingTime();
+                delta = nextLandingTime - currLandingTime;
+                currType = this.aircrafts[i].type;
+                nextType = this.aircrafts[i+1].type;
+                if (delta>=getRequiredSeparation(currType, nextType)){
                     // ok. no problem.
                 }else{
                     return false;
@@ -76,6 +96,10 @@ class Scenario{
         }
         
         return true;
+
+        function getRequiredSeparation(prev,next){
+            return 0;
+        }
     }
 }
 

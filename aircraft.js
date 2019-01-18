@@ -142,7 +142,7 @@ class Aircraft{
 
     getAssignedLandingTime(){
         if (this.isAssigned()){
-            return this.possibleLandingTimes[this.assignedRoute];
+            return this.possibleLandingTimes[this.assignedRoute].time;
         }
         else{
             return -1;
