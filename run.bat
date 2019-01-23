@@ -1,2 +1,2 @@
-node --update
+npm install
 node .
