@@ -1,0 +1,12 @@
+wp zamanlari dosyadan okunacak
+wp-faf zamani da dosyadan okunmali (offset) olarak girdik simdilik. su anda 5 dakika
+separation time eklenecek
+senaryo dosyadan okunacak
+tip'ler ve wp'ler giris noktasina gore isimlendirilecek
+kuzeybati ve guney bati ayni wp'leri ve tip'leri kullanacak. kuzey dogu ve guney dogu da benzer sekilde ayni wp'leri ve tip'leri  kullanacak. wp1-west, tip1-west, wp4-east, tip2-east
+
+guney batidan den gelen tip1-southwest olacak. kuzeyden batidan gelen tip1-northwest olacak. tip2-west ve tip2-east
+
+45 derece tip1, 90 tip2
+
+fotografini cektigim senaryoda sadece iki  giris noktasi var. sonradan gelecek senaryoda dort giris noktasi olacak.

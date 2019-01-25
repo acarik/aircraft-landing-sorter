@@ -1,9 +1,35 @@
 const Aircraft = require('./aircraft.js')
 const Scenario = require('./scenario.js')
-var moment = require('moment');
+const moment = require('moment');
+const XLSX = require('xlsx');
+const LOG_TO_TEXT_FILE = false;
 
 function loadScenario(){
-    const scenarioRaw = [
+
+
+    var workbook = XLSX.readFile('Senaryo.xlsx');// ./assets is where your relative path directory where excel file is, if your excuting js file and excel file in same directory just igore that part
+    var sheet_name_list = workbook.SheetNames; // SheetNames is an ordered list of the sheets in the workbook
+    data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]);//, {raw: true, defval:null}); //if you have multiple sheets
+    
+    var scenarioRaw = [];
+    let str = [];
+    let curr;
+    for (let i = 1; i<data.length; i++){
+        str = i.toString();
+        str += ';';
+
+        curr = data[i];
+        for (let j = 0; j<9; j++){
+            if (j == 0)
+                str += data[i]["__EMPTY"].toString();
+            else
+                str += data[i]["__EMPTY_"+j.toString()].toString();
+            str += ';';
+        }
+        scenarioRaw.push(str);
+    }
+    /*
+    scenarioRaw = [
         "1;SOUTH;MEDIUM;00:00:00;00:07:26;00:11:09;00:16:09;00:09:45;1000;1000",
         "2;SOUTH;HEAVY;00:01:15;00:07:51;00:12:24;00:17:24;00:11:00;3000;3000",
         "3;NORTH;MEDIUM;00:02:45;00:08:21;00:13:54;00:18:54;00:13:30;1000;1000",
@@ -15,7 +41,11 @@ function loadScenario(){
         "9;SOUTH;MEDIUM;00:10:15;00:10:51;00:21:24;00:26:24;00:25:00;1000;1000",
         "10;NORTH;HEAVY;00:10:15;00:10:51;00:21:24;00:26:24;00:26:24;3000;3000"
     ];
+    */
+
+    console.log(scenarioRaw[0]);
     
+
     var scenario = new Scenario();
     scenarioRaw.forEach(scenarioLineRaw => {
         scenario.addAircraft(new Aircraft(scenarioLineRaw))
@@ -31,19 +61,22 @@ function parseTimeStr(str){
 }
 
 // file logger
-var fs = require('fs');
-var util = require('util');
-var logFile = fs.createWriteStream('log.txt', { flags: 'w' });
-  // Or 'w' to truncate the file every time the process starts.
-var logStdout = process.stdout;
+if (LOG_TO_TEXT_FILE){
+    var fs = require('fs');
+    var util = require('util');
+    var logFile = fs.createWriteStream('log.txt', { flags: 'w' });
+    // Or 'w' to truncate the file every time the process starts.
+    var logStdout = process.stdout;
 
-console.log = function () {
-  logFile.write(util.format.apply(null, arguments) + '\n');
-  logStdout.write(util.format.apply(null, arguments) + '\n');
+    console.log = function () {
+    logFile.write(util.format.apply(null, arguments) + '\n');
+    logStdout.write(util.format.apply(null, arguments) + '\n');
+    }
+    console.error = console.log;
 }
-console.error = console.log;
-
 
 exports.loadScenario = loadScenario;
 exports.parseTimeStr = parseTimeStr;
-//exports.console = console;
+if (LOG_TO_TEXT_FILE)
+    exports.console = console;
+
