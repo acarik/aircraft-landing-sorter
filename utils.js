@@ -6,7 +6,7 @@ const LOG_TO_TEXT_FILE = false;
 
 function loadScenario(){
 
-
+    // 1. Read aircraft info
     var workbook = XLSX.readFile('Senaryo.xlsx');// ./assets is where your relative path directory where excel file is, if your excuting js file and excel file in same directory just igore that part
     var sheet_name_list = workbook.SheetNames; // SheetNames is an ordered list of the sheets in the workbook
     data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]);//, {raw: true, defval:null}); //if you have multiple sheets
@@ -50,7 +50,41 @@ function loadScenario(){
     scenarioRaw.forEach(scenarioLineRaw => {
         scenario.addAircraft(new Aircraft(scenarioLineRaw))
     });
+
+    // 2. Read airfield times
+    var workbook = XLSX.readFile('Senaryo.xlsx');// ./assets is where your relative path directory where excel file is, if your excuting js file and excel file in same directory just igore that part
+    var sheet_name_list = workbook.SheetNames; // SheetNames is an ordered list of the sheets in the workbook
+    data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[1]]);//, {raw: true, defval:null}); //if you have multiple sheets
+
+    // number of columns is the number of wps
+    scenario.numberOfWps = Object.keys(data[0]).length-1;
+    scenario.numberOfTips = data.length;
+
+    for (let i = 0; i<scenario.numberOfTips; i++){
+        for (let j = 0; j<scenario.numberOfWps; j++){
+            scenario.timeInfo.push({
+                "TIP":i, 
+                "WP":j, 
+                "time":parseInt(data[i][j.toString()])
+            });
+        }
+    }
     
+    // 3. read separation data
+    /*
+    var workbook = XLSX.readFile('Senaryo.xlsx');// ./assets is where your relative path directory where excel file is, if your excuting js file and excel file in same directory just igore that part
+    var sheet_name_list = workbook.SheetNames; // SheetNames is an ordered list of the sheets in the workbook
+    data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[2]]);//, {raw: true, defval:null}); //if you have multiple sheets
+
+    for (let i = 0; i<3; i++){
+        scenario.separationData.push({
+            data[0]["__EMPTY"]:{
+
+            }
+        })
+    }
+    let dummy = 0;
+*/
     return scenario;
 }
 

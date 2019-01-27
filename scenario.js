@@ -1,6 +1,11 @@
 class Scenario{
     constructor(){
         this.aircrafts = [];
+        this.separationData = [];
+        this.wpFafTime = [];
+        this.timeInfo = [];
+        this.numberOfTips = -1;
+        this.numberOfWps = -1;
     }
     addAircraft(aircraft){
         this.aircrafts.push(aircraft);
