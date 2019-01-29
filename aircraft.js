@@ -14,9 +14,10 @@ var fieldsToDisplay = [
 
 class Aircraft{
     
-    constructor(scenarioDataLine){
+    constructor(scenario, scenarioDataLine){
         var fields = scenarioDataLine.split(';');
         
+        this.scenario         = scenario;
         this.number           = parseInt(fields[0]);
         this.entry            = fields[1];
         this.type             = fields[2];
@@ -27,26 +28,49 @@ class Aircraft{
         this.actualTime       = utils.parseTimeStr(fields[7]);
         this.earlyPenalty     = parseInt(fields[8]);
         this.latePenalty      = parseInt(fields[9]);
-        this.possibleLandingTimes 
-            = getPossibleLandingTimes(this.apperanceTime);
+        this.possibleLandingTimes  = [];
+        this.calculatePossibleLandingTimes();
+        this.possibleLandingTimeCosts = [];
+        this.calculatePossibleLandingTimeCosts();
+
         // this indicates the ind in the array sortedPossibleLandingTimeIndx
         this.assignedRoute    = -1;
+        
+        // sort possible landings with respect to the landing costs
+        this.sort();
+    }
 
+    calculatePossibleLandingTimes(){
+        let scenario = this.scenario;
+        let currTipNameStr = [];
+        let currWpNameStr = [];
+        var words = this.entry.split('-');
+        for (let iTip = 0; iTip<scenario.numberOfTips; iTip++){
+            for (let iWp = 0; iWp<scenario.numberOfWps; iWp++){
+                currTipNameStr = ((iTip==0) ? this.entry : words[1]);
+                currWpNameStr = words[1];
+                this.possibleLandingTimes.push({
+                    "tip":currTipNameStr,
+                    "wp":currWpNameStr+iWp.toString(),
+                    "time":scenario.getRouteTime(iTip, iWp)
+                })
+            }
+        }
+        let dummy = 1;
+    }
+
+    calculatePossibleLandingTimeCosts(){
         // calculate deltaTimes and costs for each possible landing time
-        this.deltaTimes       = [];
-        this.possibleLandingTimeCosts = [];
+        var deltaTimes       = [];
         var currDeltaTime;
         var currCost;
-        this.possibleLandingTimes.forEach(element => {
-            currDeltaTime = this.targetTime.diff(element.time,'seconds');
-            this.deltaTimes.push(currDeltaTime);
+        for (let i = 0; i<this.possibleLandingTimes.length; i++){
+            currDeltaTime = this.targetTime - this.possibleLandingTimes[i].time;
+            deltaTimes.push(currDeltaTime);
             currCost = ((currDeltaTime < 0) ? -this.earlyPenalty : this.latePenalty);
             currCost *= currDeltaTime;
             this.possibleLandingTimeCosts.push(currCost);
-        });
-
-        // sort possible landings with respect to the landing costs
-        this.sort();
+        };
     }
 
     length(){
@@ -105,8 +129,8 @@ class Aircraft{
             }
             str += 
                 "Route#" + i.toString() + " | " + 
-                this.possibleLandingTimes[i].route.toString() + " | " +
-                this.possibleLandingTimes[i].time.toString() + " | " +
+                "TIP-"+this.possibleLandingTimes[i].tip.toString() + ", " +
+                "WP-"+this.possibleLandingTimes[i].wp.toString() + " | " +
                 this.possibleLandingTimeCosts[i].toString() + " | ";
             console.log(str);
         }
@@ -148,67 +172,6 @@ class Aircraft{
             return -1;
         }
     }
-}
-function getPossibleLandingTimes(apperanceTime){
-    // TODO: aslinda appearanceTime ile ilkleyip sureleri bunun uzerine eklemeli
-    // boyle de yazabiliriz var person = {firstName:"John", lastName:"Doe", age:46}; 
-    var landingTimes =  [
-        {
-            time:new moment({minute:6, second:5}),
-            route:"TIP1+WP1"
-        },
-        {
-            time:new moment({minute:7, second:5}),
-            route:"TIP1+WP2"
-        },
-        {
-            time:new moment({minute:8, second:5}),
-            route:"TIP1+WP3"
-        },
-        {
-            time:new moment({minute:9, second:5}),
-            route:"TIP1+WP4"
-        },
-        {
-            time:new moment({minute:10, second:5}),
-            route:"TIP1+WP5"
-        },
-        {
-            time:new moment({minute:11, second:5}),
-            route:"TIP1+WP6"
-        },
-        
-        {
-            time:new moment({minute:7, second:29}),
-            route:"TIP2+WP1"
-        },
-        {
-            time:new moment({minute:8, second:29}),
-            route:"TIP2+WP2"
-        },
-        {
-            time:new moment({minute:9, second:29}),
-            route:"TIP2+WP3"
-        },
-        {
-            time:new moment({minute:10, second:29}),
-            route:"TIP2+WP4"
-        },
-        {
-            time:new moment({minute:11, second:29}),
-            route:"TIP2+WP5"
-        },
-        {
-            time:new moment({minute:12, second:29}),
-            route:"TIP2+WP6"
-        },
-    ]
-
-    for(let i = 0; i<landingTimes.length; i++)
-    {
-        landingTimes[i].time = landingTimes[i].time.add(apperanceTime);
-    }
-    return landingTimes;
 }
 
 module.exports = Aircraft;

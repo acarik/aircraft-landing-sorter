@@ -106,6 +106,18 @@ class Scenario{
             return 0;
         }
     }
+    
+    getRouteTime(iTip, iWp){
+        for (let i = 0; i<this.timeInfo.length; i++){
+            if (this.timeInfo[i]["TIP"]==iTip){
+                if (this.timeInfo[i]["WP"]==iWp){
+                    return this.timeInfo[i]["time"] + this.wpFafTime;
+                }
+            }
+        }
+        return -1;
+    }
+
 }
 
 module.exports = Scenario;
