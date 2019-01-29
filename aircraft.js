@@ -9,7 +9,6 @@ var fieldsToDisplay = [
     "assignedRoute",
     "earliestTime",
     "latestTime",
-    "actualTime"
 ];
 
 class Aircraft{
@@ -51,8 +50,8 @@ class Aircraft{
                 currWpNameStr = words[1];
                 this.possibleLandingTimes.push({
                     "tip":currTipNameStr,
-                    "wp":currWpNameStr+iWp.toString(),
-                    "time":scenario.getRouteTime(iTip, iWp)
+                    "wp":iWp.toString() + "-" + currWpNameStr,
+                    "time":scenario.getRouteTime(iTip, iWp)+this.apperanceTime
                 })
             }
         }
@@ -120,6 +119,8 @@ class Aircraft{
         console.log(str);
 
         // now possible landing times, sorted
+        console.log("route# / route / cost / time");
+        
         for(let i = 0; i<this.length(); i++){
             str = [];
             if (this.getAssignedRoute() == i){
@@ -130,8 +131,9 @@ class Aircraft{
             str += 
                 "Route#" + i.toString() + " | " + 
                 "TIP-"+this.possibleLandingTimes[i].tip.toString() + ", " +
-                "WP-"+this.possibleLandingTimes[i].wp.toString() + " | " +
-                this.possibleLandingTimeCosts[i].toString() + " | ";
+                "WP"+this.possibleLandingTimes[i].wp.toString() + " | " +
+                this.possibleLandingTimeCosts[i].toString() + " | " +
+                utils.parseToHmsStr(this.possibleLandingTimes[i].time);
             console.log(str);
         }
         console.log(" ");

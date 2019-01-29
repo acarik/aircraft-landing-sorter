@@ -69,7 +69,8 @@ class Scenario{
         for(let i = 0; i<this.length(); i++){
             if(this.aircrafts[i].isAssigned()){
                 currLandingTime = this.aircrafts[i].getAssignedLandingTime();
-                if ((currLandingTime.isBefore(this.aircrafts[i].latestTime)) && (currLandingTime.isAfter(this.aircrafts[i].earliestTime))){
+                if (currLandingTime < this.aircrafts[i].latestTime && currLandingTime > this.aircrafts[i].earliestTime){
+                //if ((currLandingTime.isBefore(this.aircrafts[i].latestTime)) && (currLandingTime.isAfter(this.aircrafts[i].earliestTime))){
                     // ok. no problem.
                 }else{
                     return false;
@@ -91,7 +92,7 @@ class Scenario{
                 delta = nextLandingTime - currLandingTime;
                 currType = this.aircrafts[i].type;
                 nextType = this.aircrafts[i+1].type;
-                if (delta>=getRequiredSeparation(currType, nextType)){
+                if (delta>=this.getRequiredSeparation(currType, nextType)){
                     // ok. no problem.
                 }else{
                     return false;
@@ -101,10 +102,10 @@ class Scenario{
         }
         
         return true;
-
-        function getRequiredSeparation(prev,next){
-            return 0;
-        }
+    }
+    
+    getRequiredSeparation(before,after){
+        return this.separationData[before][after];
     }
     
     getRouteTime(iTip, iWp){

@@ -32,59 +32,7 @@ function loadScenario(){
     var sheet_name_list = workbook.SheetNames; // SheetNames is an ordered list of the sheets in the workbook
     data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[2]]);//, {raw: true, defval:null}); //if you have multiple sheets
 
-    scenario.separationData.push({
-        "after":"HEAVY",
-        "before":"HEAVY",
-        "time":parseInt(data[0]["heavy"])
-    })
-
-    scenario.separationData.push({
-        "after":"HEAVY",
-        "before":"MEDIUM",
-        "time":parseInt(data[0]["medium"])
-    })
-
-    scenario.separationData.push({
-        "after":"HEAVY",
-        "before":"LIGHT",
-        "time":parseInt(data[0]["light"])
-    })
-
-    scenario.separationData.push({
-        "after":"MEDIUM",
-        "before":"HEAVY",
-        "time":parseInt(data[1]["heavy"])
-    })
-
-    scenario.separationData.push({
-        "after":"MEDIUM",
-        "before":"MEDIUM",
-        "time":parseInt(data[1]["medium"])
-    })
-
-    scenario.separationData.push({
-        "after":"MEDIUM",
-        "before":"LIGHT",
-        "time":parseInt(data[1]["light"])
-    })
-
-    scenario.separationData.push({
-        "after":"LIGHT",
-        "before":"HEAVY",
-        "time":parseInt(data[2]["heavy"])
-    })
-
-    scenario.separationData.push({
-        "after":"LIGHT",
-        "before":"MEDIUM",
-        "time":parseInt(data[2]["medium"])
-    })
-    
-    scenario.separationData.push({
-        "after":"LIGHT",
-        "before":"HEAVY",
-        "time":parseInt(data[2]["light"])
-    })
+    calculateSeparationData(scenario,data);
 
     // 4. read wp-faf time
     var workbook = XLSX.readFile('Senaryo.xlsx');// ./assets is where your relative path directory where excel file is, if your excuting js file and excel file in same directory just igore that part
@@ -122,12 +70,126 @@ function loadScenario(){
     return scenario;
 }
 
+function calculateSeparationData(scenario,data){
+    scenario.separationData = {
+        "HEAVY" : {
+            "HEAVY":-1,
+            "MEDIUM":-1,
+            "LIGHT":-1
+        },
+        "MEDIUM" : {
+            "HEAVY":-1,
+            "MEDIUM":-1,
+            "LIGHT":-1
+        },
+        "LIGHT" : {
+            "HEAVY":-1,
+            "MEDIUM":-1,
+            "LIGHT":-1
+        },
+    }
+    var separationData = [];
+
+    // asagida before ve after ters
+    separationData.push({
+        "after":"HEAVY",
+        "before":"HEAVY",
+        "time":parseInt(data[0]["heavy"])
+    })
+
+    separationData.push({
+        "after":"HEAVY",
+        "before":"MEDIUM",
+        "time":parseInt(data[0]["medium"])
+    })
+
+    separationData.push({
+        "after":"HEAVY",
+        "before":"LIGHT",
+        "time":parseInt(data[0]["light"])
+    })
+
+    separationData.push({
+        "after":"MEDIUM",
+        "before":"HEAVY",
+        "time":parseInt(data[1]["heavy"])
+    })
+
+    separationData.push({
+        "after":"MEDIUM",
+        "before":"MEDIUM",
+        "time":parseInt(data[1]["medium"])
+    })
+
+    separationData.push({
+        "after":"MEDIUM",
+        "before":"LIGHT",
+        "time":parseInt(data[1]["light"])
+    })
+
+    separationData.push({
+        "after":"LIGHT",
+        "before":"HEAVY",
+        "time":parseInt(data[2]["heavy"])
+    })
+
+    separationData.push({
+        "after":"LIGHT",
+        "before":"MEDIUM",
+        "time":parseInt(data[2]["medium"])
+    })
+    
+    separationData.push({
+        "after":"LIGHT",
+        "before":"LIGHT",
+        "time":parseInt(data[2]["light"])
+    })
+
+    // onceki yapida before ve after ters oldugu icin burada ters cekiliyor
+    var types = ["HEAVY", "MEDIUM", "LIGHT"];
+    let after;
+    let before;
+    let k;
+    for(let i = 0; i<types.length; i++){
+        for(let j = 0; j<types.length; j++){
+            after = types[i];
+            before = types[j];
+            for(k = 0; k<separationData.length; k++){
+                if (separationData[k]["after"]==before){
+                    if (separationData[k]["before"]==after){
+                        break;
+                    }
+                }
+            }
+            scenario.separationData[before][after] = separationData[k].time;
+        }
+    }
+}
+
 function parseTimeStr(str){
     var fields = str.split(':');
     var h = parseInt(fields[0]);
     var m = parseInt(fields[1]);
     var s = parseInt(fields[2]);
     return (s+(m*60)+(h*3600));
+}
+
+function parseToHmsStr(seconds){
+    var h = Math.floor(seconds/3600);
+    seconds -= h*3600;
+    var m = Math.floor(seconds/60);
+    seconds -= m*60;
+    var s = seconds;
+    return fix(h) + ":" + fix(m) + ":" + fix(s);
+
+    function fix(n){
+        if (n < 10){
+            return "0" + n.toString();
+        }else{
+            return n.toString();
+        }
+    }
+
 }
 
 // file logger
@@ -147,6 +209,7 @@ if (LOG_TO_TEXT_FILE){
 
 exports.loadScenario = loadScenario;
 exports.parseTimeStr = parseTimeStr;
+exports.parseToHmsStr = parseToHmsStr;
 if (LOG_TO_TEXT_FILE)
     exports.console = console;
 
