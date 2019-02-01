@@ -1,5 +1,4 @@
 utils = require('./utils.js')
-var moment = require('moment');
 
 var fieldsToDisplay = [
     "number",

@@ -10,3 +10,5 @@ guney batidan den gelen tip1-southwest olacak. kuzeyden batidan gelen tip1-north
 45 derece tip1, 90 tip2
 
 fotografini cektigim senaryoda sadece iki  giris noktasi var. sonradan gelecek senaryoda dort giris noktasi olacak.
+
+olası rotalar, [earliest, latest] aralığına göre baştan elenebilir.

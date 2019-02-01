@@ -1,8 +1,7 @@
 const Aircraft = require('./aircraft.js')
 const Scenario = require('./scenario.js')
-const moment = require('moment');
 const XLSX = require('xlsx');
-const LOG_TO_TEXT_FILE = false;
+const LOG_TO_TEXT_FILE = true;
 
 function loadScenario(){
 
