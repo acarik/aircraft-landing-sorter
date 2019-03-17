@@ -1,0 +1,13 @@
+Read aircraft and airfield info from file
+Calculate landing times for each route for each aircraft
+Calculate costs for each possible route
+Sort each possible route with respect to landing cost in the ascending order
+for each aircraft
+	for each possible route
+		if landing time associated with the current route is between earliest and latest landing time
+			Advance to next aircraft
+		else
+			if this is the last route
+				return error
+			else
+				Advance to the next possible route
