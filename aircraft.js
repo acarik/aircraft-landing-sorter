@@ -49,7 +49,8 @@ class Aircraft{
                 currWpNameStr = words[1];
                 this.possibleLandingTimes.push({
                     "tip":currTipNameStr,
-                    "wp":iWp.toString() + "-" + currWpNameStr,
+                    // iWp+1 yazildi, wp numaralarinin 0 yerine 1'den baslamasi icin
+                    "wp":(iWp+1).toString() + "-" + currWpNameStr,
                     "time":scenario.getRouteTime(iTip, iWp)+this.apperanceTime
                 })
             }
